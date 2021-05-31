@@ -24,7 +24,7 @@ public class CaracteristicasForm {
 		this.descricao = descricao;
 	}
 
-	public Caracteristicas toModel(@NotNull @Valid Produto produto) {
+	public Caracteristicas converter(@NotNull @Valid Produto produto) {
 		return new Caracteristicas(nome, descricao, produto);
 	}
 

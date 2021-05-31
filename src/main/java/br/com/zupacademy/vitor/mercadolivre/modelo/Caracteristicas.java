@@ -21,6 +21,10 @@ public class Caracteristicas {
 	@ManyToOne @Valid
 	private Produto produto;
 	
+	public Caracteristicas() {
+		
+	}
+	
 	public Caracteristicas(@NotBlank String nome, @NotBlank String descricao, @Valid Produto produto) {
 		super();
 		this.nome = nome;

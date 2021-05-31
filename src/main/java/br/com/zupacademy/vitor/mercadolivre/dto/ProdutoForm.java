@@ -2,8 +2,10 @@ package br.com.zupacademy.vitor.mercadolivre.dto;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -12,6 +14,7 @@ import javax.validation.constraints.Size;
 
 import br.com.zupacademy.vitor.mercadolivre.modelo.Categoria;
 import br.com.zupacademy.vitor.mercadolivre.modelo.Produto;
+import br.com.zupacademy.vitor.mercadolivre.modelo.Usuario;
 import br.com.zupacademy.vitor.mercadolivre.repository.CategoriaRepository;
 
 public class ProdutoForm {
@@ -68,13 +71,27 @@ public class ProdutoForm {
 	public Long getIdCategoria() {
 		return idCategoria;
 	}
+	
+	public Set<String> buscaCaracteristicasIguais() {
+		HashSet<String> nomesIguais = new HashSet<>();
+		HashSet<String> resultados = new HashSet<>();
+		// 1
+		for (CaracteristicasForm caracteristica : caracteristicas) {
+			String nome = caracteristica.getNome();
+			// 1
+			if (!nomesIguais.add(nome)) {
+				resultados.add(nome);
+			}
+		}
+		return resultados;
+	}
 
-	public Produto toModel(CategoriaRepository categoriaRepository) {
+	public Produto converter(CategoriaRepository categoriaRepository, Usuario dono) {
 		Optional<Categoria> possivelCategoria = categoriaRepository.findById(idCategoria);
 		if(possivelCategoria.isEmpty()) {
 			throw new IllegalArgumentException("Id da categoria invalido");
 		}
-		return new Produto(nome, preco, quantidade, descricao, possivelCategoria.get(), caracteristicas);
+		return new Produto(nome, preco, quantidade, descricao, possivelCategoria.get(), caracteristicas, dono);
 	}
 
 }
